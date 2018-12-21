@@ -1,0 +1,13 @@
+.viewList {
+	max-width: 600px;
+	margin:auto;
+}
+
+tr:hover .icon  {
+	cursor: pointer;
+	visibility: visible;
+}
+
+.icon {
+	visibility: hidden;
+}
