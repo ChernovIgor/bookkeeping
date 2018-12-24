@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './UserObjList.css';
-
+import hostSetting from './host';
 class UserObjList extends Component {
 	constructor(props) {
 		super(props);
@@ -11,33 +11,27 @@ class UserObjList extends Component {
 
 	}
 
+ 
 
  componentDidMount() {
   this.getContent();
-  console.log(this.props);
+  
  }
 
+
  getContent() {
-	  axios.get('http:' + '/' +'/localhost/bookkeeping/')
+	  axios.get(hostSetting.host)
   .then( (response) => {
+
    	this.setState({ dat: response.data });
   });
 }
 
- del = (id) => {
-  axios.delete('http:' + '/' +'/localhost/bookkeeping/objDel.php', {
-    params: { id : id, pas: this.props.pas} 
-  })
-  .then( (response) => {
-    console.log(response);
-    this.getContent();
-     
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-
- } 
+openStatistic = () => {
+	let stat = statistic(this.state.dat);
+	let mesStat = 'Зп в месяц = ' + stat + 'руб';
+	alert(mesStat);
+}
 
 render() {
   let link = null;
@@ -63,7 +57,7 @@ render() {
   return(
   	   <div className="viewList">
   	    <div className="form-row">
-  	    	<button className="btn col">Статистика</button>
+  	    	<button onClick={this.openStatistic} className="btn col">Статистика</button>
         {outh}
   		</div>
   		<table className="table table-hover">
@@ -84,16 +78,39 @@ render() {
 }
 export default UserObjList;
 
+function statistic(data) {
+  let zp = 0;
+  let ar = [];
+  let betDate;
+  let endDate = new Date();;
+  let dif; //количество дней с начала заработка
+  let sum = 0; //сумма дохода с квартир
+  let j = 0;
+  for (let i=0; i< data.length; i++) {
+  	if (parseInt(data[i].price) < 0) {
+  		ar[j] = new Date(data[i].dCreate);
+  		sum += parseInt(data[i].price) * (-1);
+  		j++;
+  	}
+  }
+   betDate = Math.min.apply(null, ar);
+  
+   dif = (endDate-betDate)/(1000 * 60 * 60 * 24);//количество дней 
+   zp = Math.round(sum * 30 / dif);
+  return zp;
+}
+
 function formPrice(price) {
     
-	let n = "";
-	for(let i=0; i<price.length; i++) {
-		if((price.length-1-i)%3===0) {
-			n +=  price[i] + " ";
-		} else {
-			n += price[i];
-		}
-	}
-	
-     return n;
+  let pr = (Number(price) * (-1)).toString();
+  let n = "";
+  for(let i=0; i<pr.length; i++) {
+    if((pr.length-1-i)%3===0) {
+      n +=  pr[i] + " ";
+    } else {
+      n += pr[i];
+    }
+  }
+  return n;
 }
+

@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
-
 import axios from 'axios';
 import './Form.css';
+import hostSetting from './host';
 
 class FormAdd extends Component {
 	constructor(props) {
-    
   
 		let name = '';
+    let date = formatDate(new Date());
+  
 		if(props.data) { 
-			name=props.data.name
+			name=props.data.name;
+      date = props.data.dCreate;
 		}
       super(props);
       this.state = {
       inpObj: name,
-      inpDate: formatDate(new Date()),
+      inpDate: date,
     	}
-     console.log(props.data);	 
     }
-
 
 handleChange = (event) => {
 	this.setState({ inpObj : event.target.value });
@@ -37,22 +37,22 @@ addOrUp = () => {
 }
 
 uppdateOjb = () => {
- axios.put('http:' + '/' + '/localhost/bookkeeping/update.php', {
+ axios.put(hostSetting.host + 'update.php', {
    name: this.state.inpObj,
    id: this.props.data.id,
    pas: this.props.pas,
- }).
- then( response => {
+   date: this.state.inpDate,
+ }).then( response => {
   console.log(response);
- }).
- catch( error => {
+ }).catch( error => {
   console.log(error);
  });
 }
 
 
-addObj = () => {	
-	axios.post('http:' + '/' +'/localhost/bookkeeping/add.php', {
+addObj = () => {
+ 
+	axios.post(hostSetting.host + 'add.php' , {
   		name: this.state.inpObj,
       pas: this.props.pas,
       date: this.state.inpDate,

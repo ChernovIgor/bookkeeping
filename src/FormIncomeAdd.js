@@ -1,21 +1,24 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './Form.css';
-
+import hostSetting from './host';
 class FormIncomeAdd extends Component {
 	constructor(props) {
     let name = '';
     let price = '';
+    let date = formatDate(new Date());
+
     
       super(props);
       if(props.data) {
         name = props.data.name;
         price = props.data.price;
+        date = props.data.dCreate;
       }
       this.state = {
       	inpName: name,
       	inpPrice: price,
-        inpDate: ''
+        inpDate: date,
       }
 
 
@@ -36,7 +39,7 @@ addOrUp = () => {
 }
 
 addObj = () => {
-   axios.post('http:' + '/' +'/localhost/bookkeeping/incomeAdd.php', {
+   axios.post(hostSetting.host + 'incomeAdd.php', {
   		name: this.state.inpName,
   		price: this.state.inpPrice,
   		idObj: this.props.idObj,
@@ -53,11 +56,12 @@ addObj = () => {
 
 uppdateOjb = () => {
 
-     axios.put('http:' + '/' +'/localhost/bookkeeping/incomeUp.php', {
+     axios.put(hostSetting.host +'incomeUp.php', {
       id: this.props.data.id,
       name: this.state.inpName,
       price: this.state.inpPrice,
       pas: this.props.pas,
+      date: this.state.inpDate,
   })
   .then(function (response) {
     console.log(response);
@@ -100,4 +104,11 @@ uppdateOjb = () => {
 	}
 }
 
-export default FormIncomeAdd
+export default FormIncomeAdd;
+
+function formatDate(date) {
+  let s = date.getFullYear().toString()+
+  '-'+ (date.getMonth() + 1).toString() +
+  '-'+ date.getDate().toString(); 
+  return s;
+}

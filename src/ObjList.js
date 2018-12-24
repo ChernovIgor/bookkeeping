@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './ObjList.css';
-
+import hostSetting from './host';
 class ObjList extends Component {
 	constructor(props) {
 		super(props);
@@ -11,21 +11,20 @@ class ObjList extends Component {
 
 	}
 
-
  componentDidMount() {
   this.getContent();
-  console.log(this.props);
+  console.log(hostSetting.host);
  }
 
  getContent() {
-	  axios.get('http:' + '/' +'/localhost/bookkeeping/')
+	  axios.get(hostSetting.host)
   .then( (response) => {
    	this.setState({ dat: response.data });
   });
 }
 
  del = (id) => {
-  axios.delete('http:' + '/' +'/localhost/bookkeeping/objDel.php', {
+  axios.delete( hostSetting.host +'objDel.php', {
     params: { id : id, pas: this.props.pas} 
   })
   .then( (response) => {
@@ -37,7 +36,7 @@ class ObjList extends Component {
     console.log(error);
   });
 
- } 
+ }
 
 render() {
   let link = null;
@@ -93,19 +92,22 @@ render() {
 } 
 
 }
+
+
 export default ObjList;
+
+
 
 function formPrice(price) {
    
-  let pr = (price * (-1)).toString();
- 	let n = "";
-	for(let i=0; i<pr.length; i++) {
-		if((pr.length-1-i)%3===0) {
-			n +=  pr[i] + " ";
-		} else {
-			n += pr[i];
-		}
-	}
-	
-     return n;
+  let pr = (Number(price) * (-1)).toString();
+  let n = "";
+  for(let i = 0; i<pr.length; i++) {
+    if ((pr.length-1-i)%3===0) {
+      n +=  pr[i] + " ";
+    } else {
+      n += pr[i];
+    }
+  }
+  return n;
 }

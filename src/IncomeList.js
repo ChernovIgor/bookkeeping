@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './IncomeList.css';
+import hostSetting from './host';
 class IncomeList extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			dat: [],
 			sum: 0,
+
 		}
 	}
- 
+
 componentDidMount() {
   this.getContent();
   console.log(this.props.pas);
@@ -18,7 +20,7 @@ componentDidMount() {
 getContent= () => {
     let idObj = this.props.idObj;
 
-   axios.get('http:' + '/' +'/localhost/bookkeeping/expenses.php', 
+   axios.get(hostSetting.host +'expenses.php', 
     { params: { id : idObj.toString()} })
   .then((response) => {
    let sum = 0;
@@ -43,7 +45,7 @@ formEdit = (a) => {
 }
 
  del = (id) => {
-  axios.delete('http:' + '/' +'/localhost/bookkeeping/incomeDel.php', {
+  axios.delete(hostSetting.host + 'incomeDel.php', {
     params: { id : id, pas: this.props.pas } 
   })
   .then( (response) => {

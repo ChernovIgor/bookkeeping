@@ -1,33 +1,35 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './IncomeList.css';
-
+import hostSetting from './host';
 class UserIncomeList extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			dat: [],
 			sum: 0,
+      expens: 0,
 		}
 	}
  
+
 componentDidMount() {
   this.getContent();
-  console.log(this.props.pas);
+  
  }
 
 getContent= () => {
     let idObj = this.props.idObj;
 
-   axios.get('http:' + '/' +'/localhost/bookkeeping/expenses.php', 
+   axios.get(hostSetting.host + 'expenses.php', 
     { params: { id : idObj.toString()} })
   .then((response) => {
-   let sum = 0;
-  
-   for(var i = 0; i < response.data.length; i++) {
-      sum += Number(response.data[i].price);    
-   }
-   this.setState({dat: response.data, sum: sum});   
+   
+    this.setState({
+      dat: response.data, 
+      sum: summa(response.data),
+      expens: separator(response.data),
+    });   
   
   })
   .catch(function (error) {
@@ -38,25 +40,6 @@ getContent= () => {
     // always executed
   });
 }
-formEdit = (a) => {
-  //после получения параментра нужно открыть форму ввода и заполнить туда те параметры
-  console.log(a);
-}
-
- del = (id) => {
-  axios.delete('http:' + '/' +'/localhost/bookkeeping/incomeDel.php', {
-    params: { id : id, pas: this.props.pas } 
-  })
-  .then( (response) => {
-    console.log(response);
-    this.getContent();
-     
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-
- } 
  	render() {
  		
  	let link = null;
@@ -82,19 +65,24 @@ formEdit = (a) => {
      
 	  		<table className="table table-hover m-0">
   			<thead>
-    			<tr>
-      				<th>Назвавание расхода</th>
-      				<th>Руб</th>
-    			</tr>
+           <tr>
+              <th>Расходы</th>
+              <th>{this.state.expens && this.state.expens.toString()} </th>
+          </tr>
+          <tr>
+              <th>Итого</th>
+              <th>{this.state.sum && this.state.sum.toString()}</th>
+          </tr>
+          <tr>
+              <th>Назвавание расхода</th>
+              <th>Руб</th>
+          </tr>
   			</thead>
   			<tbody>
       			{link}
     		</tbody>
     		<tfoot>
-    			<tr>
-      				<th>Итого</th>
-      				<th>{this.state.sum && this.state.sum.toString()}</th>
-    			</tr>
+         
     		</tfoot>
 		</table>
 
@@ -104,3 +92,35 @@ formEdit = (a) => {
 }
 
 export default UserIncomeList;
+
+/*
+ Работает правильно если будет только один доход 
+ (продажа квартиры) 
+*/
+function separator(data) {
+  let aPrice =[]; 
+  let purchasePrice;
+  let expens; //расходы на содержание и ремонт квартиры
+  let sum = 0;
+  let j=0;
+   for (let i=0; i < data.length; i++) {
+      let a = parseInt(data[i].price);
+      if(a > 0) { 
+        aPrice[j] = a; 
+        sum += a; 
+        j++; 
+      } 
+  }
+  // почти всегда самый максимальный расход - это цена покупки квартиры
+  purchasePrice = Math.max.apply(null, aPrice);
+  expens = sum - purchasePrice;
+  return expens;
+}
+
+function summa(data) {
+    let sum = 0;
+     for(let i = 0; i < data.length; i++) {
+      sum += Number(data[i].price);    
+   }
+   return sum;
+}
