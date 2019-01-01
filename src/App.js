@@ -6,6 +6,7 @@ import UserIncomeList from './UserIncomeList';
 import FormAdd from './FormAdd';
 import FormIncomeAdd from './FormIncomeAdd';
 import Auth from './Auth';
+import  './style/custom.css';
 
 class App extends Component {
   constructor(props) {
@@ -21,7 +22,7 @@ class App extends Component {
   }
 
    render() {
-  
+      
    	switch(this.state.view) {
    		case 'ObjList' : 
    		{ 
@@ -29,7 +30,7 @@ class App extends Component {
    			
         return (<ObjList 
    				toIncomeList= { (id) => this.setState( {view: 'IncomeList', idObj:id }) } 
-   				back={ () => this.setState({view: 'ObjList'}) }
+   				back= { () => this.setState({view: 'ObjList'})}
           signIn= { () => this.setState({view: 'Auth'})} 
    				openForm = { (v) => this.setState({view: 'FormAdd', dataObj:v})}
           pas = { this.state.pas }
@@ -39,13 +40,13 @@ class App extends Component {
         
         return (<UserObjList 
           toIncomeList= { (id) => this.setState( {view: 'IncomeList', idObj:id }) } 
-          back={ () => this.setState({view: 'ObjList'}) }
-          signIn= { () => this.setState({view: 'Auth'})} 
+          back= { () => this.setState({view: 'ObjList'}) }
+          signIn = { () => this.setState({view: 'Auth'})} 
           pas = { this.state.pas }
           />);
         
         }
-   		}
+   		}  
    		case  'IncomeList' : {
          if(this.state.pas) {
    			return (<IncomeList 

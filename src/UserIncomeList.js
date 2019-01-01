@@ -18,6 +18,8 @@ componentDidMount() {
   
  }
 
+
+
 getContent= () => {
     let idObj = this.props.idObj;
 
@@ -40,17 +42,26 @@ getContent= () => {
     // always executed
   });
 }
+//что делать
+separeCreate(lastdCreate, currentdCreate) {
+  if(lastdCreate==currentdCreate) {
+    return true;
+  } else {
+    return false;
+  }
+}
  	render() {
  		
  	let link = null;
+  let lastdCreate = null;
  		if(this.state.dat) { 
 	 		link = this.state.dat.map( (v) => 
-	 		<tr key={v.id.toString()}> 
+	 		<tr key={v.id.toString()} > 
 				<td>
-          {v.name}
+          {v.name} 
          <p className="m-0 p-0"><small>{v.dCreate}</small></p>
         </td>
-				<td> {v.price} </td> 
+				<td> {formPrice(v.price)} </td> 
 			</tr>)
     }
 		 
@@ -65,13 +76,13 @@ getContent= () => {
      
 	  		<table className="table table-hover m-0">
   			<thead>
-           <tr>
-              <th>Расходы</th>
-              <th>{this.state.expens && this.state.expens.toString()} </th>
+           <tr className="table-primary">
+              <th data-toggle="tooltip" data-placement="bottom" title="Без учета трат на покупку квартиры">Расходы</th>
+              <th>{this.state.expens && formPrice(this.state.expens)} </th>
           </tr>
-          <tr>
-              <th>Итого</th>
-              <th>{this.state.sum && this.state.sum.toString()}</th>
+          <tr className="table-danger">
+              <th data-toggle="tooltip" data-placement="bottom" title="С учетом трат на покупку квартиры">Итого</th>
+              <th>{this.state.sum && formPrice(this.state.sum)}</th>
           </tr>
           <tr>
               <th>Назвавание расхода</th>
@@ -124,3 +135,22 @@ function summa(data) {
    }
    return sum;
 }
+
+function formPrice(price) {
+   
+  let pr = Number(price).toString();
+  let n = "";
+  for(let i = 0; i<pr.length; i++) {
+    if ((pr.length-1-i)%3===0) {
+      n +=  pr[i] + " ";
+    } else {
+      n += pr[i];
+    }
+  }
+  return n;
+}
+
+/*
+
+
+}*/

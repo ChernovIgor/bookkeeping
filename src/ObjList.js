@@ -54,7 +54,7 @@ render() {
         	 <p className="m-0 p-0"><small>{v.dCreate}</small></p>
 		</td>
 		<td className="text-info font-weight-bold">
-			{v.price ? formPrice(v.price): '0'} р
+			{v.price ? formPrice(v.price): '0'} 
 		</td>
 		</tr>  );
 } 
@@ -73,14 +73,13 @@ render() {
             className="col btn btn-primary"> 
             <i className="fas fa-plus"></i>
           </button>
-  			<button className="btn col">Статистика</button>
         {outh}
   		</div>
   		<table className="table table-hover">
   		<thead>
   			<tr> 
   				<th>Объект</th>
-  				<th>Доход</th>
+  				<th>Доход (руб)</th>
   			</tr>
   		</thead>
   		<tbody>

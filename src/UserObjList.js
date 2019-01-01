@@ -43,7 +43,7 @@ render() {
         	 <p className="m-0 p-0"><small>{v.dCreate}</small></p>
 		</td>
 		<td className="text-info font-weight-bold">
-			{v.price ? formPrice(v.price): '0'} р
+			{v.price ? formPrice(v.price): '0'}
 		</td>
 		</tr>  );
 } 
@@ -57,6 +57,7 @@ render() {
   return(
   	   <div className="viewList">
   	    <div className="form-row">
+
   	    	<button onClick={this.openStatistic} className="btn col">Статистика</button>
         {outh}
   		</div>
@@ -64,7 +65,9 @@ render() {
   		<thead>
   			<tr> 
   				<th>Объект</th>
-  				<th>Доход</th>
+  				<th data-toggle="tooltip" data-placement="bottom" title="Все траты по квартире">
+            Доход (руб.)
+          </th>
   			</tr>
   		</thead>
   		<tbody>
