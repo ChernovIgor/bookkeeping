@@ -11,13 +11,9 @@ class UserObjList extends Component {
 
 	}
 
- 
-
  componentDidMount() {
-  this.getContent();
-  
+  this.getContent();  
  }
-
 
  getContent() {
 	  axios.get(hostSetting.host)
@@ -58,7 +54,7 @@ render() {
   	   <div className="viewList">
   	    <div className="form-row">
 
-  	    	<button onClick={this.openStatistic} className="btn col">Статистика</button>
+  	    	<button onClick={this.openStatistic} className="btn btn-secondary col">Статистика</button>
         {outh}
   		</div>
   		<table className="table table-hover">

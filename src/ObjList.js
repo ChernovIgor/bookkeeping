@@ -8,12 +8,10 @@ class ObjList extends Component {
 		this.state = {
 			dat: [],
 		}
-
 	}
 
  componentDidMount() {
   this.getContent();
-  console.log(hostSetting.host);
  }
 
  getContent() {
@@ -28,7 +26,6 @@ class ObjList extends Component {
     params: { id : id, pas: this.props.pas} 
   })
   .then( (response) => {
-    console.log(response);
     this.getContent();
      
   })

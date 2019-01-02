@@ -18,8 +18,6 @@ componentDidMount() {
   
  }
 
-
-
 getContent= () => {
     let idObj = this.props.idObj;
 
@@ -42,31 +40,56 @@ getContent= () => {
     // always executed
   });
 }
-//что делать
-separeCreate(lastdCreate, currentdCreate) {
-  if(lastdCreate==currentdCreate) {
-    return true;
-  } else {
-    return false;
-  }
-}
- 	render() {
- 		
- 	let link = null;
-  let lastdCreate = null;
- 		if(this.state.dat) { 
-	 		link = this.state.dat.map( (v) => 
-	 		<tr key={v.id.toString()} > 
-				<td>
-          {v.name} 
+
+tableRow = (v, flag) => {
+  if(flag) {
+  return(
+    <tr key={v.id.toString()} > 
+        <td>
+         {v.name}  
          <p className="m-0 p-0"><small>{v.dCreate}</small></p>
         </td>
-				<td> {formPrice(v.price)} </td> 
-			</tr>)
+        <td> {formPrice(v.price)} </td> 
+      </tr>
+  );
+  } else {
+    return (
+      <tr key={v.id.toString()} className="table-secondary" > 
+        <td>
+         {v.name}  
+         <p className="m-0 p-0"><small>{v.dCreate}</small></p>
+        </td>
+        <td> {formPrice(v.price)} </td> 
+      </tr>
+    );
+  }
+}
+
+
+ 	render = () => {
+ 		
+ 	let link = null;
+  let vlink = [];
+ 	let v = null;
+  let flag = true;
+   if(this.state.dat.length!==0) {
+    v = this.state.dat;
+    vlink[0] = this.tableRow(v[0], flag);
+    
+    for(let i=1; i<v.length; i++) {
+        if(v[i-1].dCreate!==v[i].dCreate) {
+            flag = !flag;
+       vlink[i] = this.tableRow(v[i], flag);
+        } else {
+       vlink[i] = this.tableRow(v[i], flag);          
+      }   
     }
-		 
+    link =  vlink.map( (v) => v);   
+  }
+		   
  		return (
  		<div className="viewList"> 
+       
  		  <div className="row mx-0 ">
         <button className=" col btn btn-secondary" 
           onClick={this.props.back}>
@@ -104,10 +127,7 @@ separeCreate(lastdCreate, currentdCreate) {
 
 export default UserIncomeList;
 
-/*
- Работает правильно если будет только один доход 
- (продажа квартиры) 
-*/
+
 function separator(data) {
   let aPrice =[]; 
   let purchasePrice;
@@ -140,7 +160,7 @@ function formPrice(price) {
    
   let pr = Number(price).toString();
   let n = "";
-  for(let i = 0; i<pr.length; i++) {
+  for(let i = 0; i < pr.length; i++) {
     if ((pr.length-1-i)%3===0) {
       n +=  pr[i] + " ";
     } else {
@@ -150,7 +170,3 @@ function formPrice(price) {
   return n;
 }
 
-/*
-
-
-}*/
