@@ -51,7 +51,7 @@ render() {
         	 <p className="m-0 p-0"><small>{v.dCreate}</small></p>
 		</td>
 		<td className="text-info font-weight-bold">
-			{v.price ? formPrice(v.price): '0'} 
+		<nobr>{v.price ? formPrice(v.price): '0'} </nobr> 
 		</td>
 		</tr>  );
 } 

@@ -68,7 +68,7 @@ formEdit = (a) => {
         </button> 
          <p className="m-0 p-0"><small>{v.dCreate}</small></p>
         </td>
-				<td> {v.price} </td> 
+				<td><nobr>{v.price}</nobr></td> 
 			</tr>)
     }
 		 
